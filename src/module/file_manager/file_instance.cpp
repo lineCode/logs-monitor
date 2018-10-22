@@ -138,10 +138,14 @@ void FileInstance::CaptureFileThread()
 		{
 			QLOG_APP(L"File {0} changed, current file size = {1}, last file size = {2}") 
 				<< file_.c_str() << curr_file_size_ << last_file_size_;
+
+			bool append = curr_file_size_ >= last_file_size_;
+
 			// 回调到上层 UI
-			Post2UI(ToWeakCallback([this, buffer]() {
-				file_changed_callback_(file_, (PCHAR)buffer.get(), curr_file_size_ >= last_file_size_);
+			Post2UI(ToWeakCallback([this, buffer, append]() {
+				file_changed_callback_(file_, (PCHAR)buffer.get(), append);
 			}));
+
 			// 记录最后读取文件的位置
 			last_file_size_ = curr_file_size_;
 		}
