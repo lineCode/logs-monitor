@@ -13,6 +13,10 @@
 						pushedimage="../public/button/icon_pushed.png"
 						disabledimage="stop_capture.png" />
 			<Control class="splitline_ver_level1" margin="5,0,10" visible="false"/>
+			<HBox name="global_message">
+				<Control width="auto" height="auto" bkimage="global_message_icon.png" valign="center" margin="0,0,5"/>
+				<Label text="右侧添加关键字来高亮你关心的内容~" valign="center"/>
+			</HBox>
 			<HListBox name="keyword_list" width="auto"></HListBox>
 			<Control />
 			<HBox width="auto" height="auto" valign="center">

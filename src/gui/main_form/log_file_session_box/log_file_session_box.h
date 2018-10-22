@@ -36,6 +36,7 @@ private:
 	Button*		keyword_add_ = nullptr;
 	Button*		start_capture_ = nullptr;
 	Button*		stop_capture_ = nullptr;
+	HBox*		global_message_ = nullptr;
 
 	// data
 	std::shared_ptr<FileInstance>	log_instance_;			// 文件状态管理

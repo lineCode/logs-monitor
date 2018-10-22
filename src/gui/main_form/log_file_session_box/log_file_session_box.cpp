@@ -27,6 +27,7 @@ void LogFileSessionBox::InitControl(const std::wstring& file_path, ListBox* log_
 	log_content_	= dynamic_cast<RichEdit*>(FindSubControl(L"log_content"));
 	start_capture_	= dynamic_cast<Button*>(FindSubControl(L"start_capture"));
 	stop_capture_	= dynamic_cast<Button*>(FindSubControl(L"stop_capture"));
+	global_message_	= dynamic_cast<HBox*>(FindSubControl(L"global_message"));
 
 	log_instance_.reset(new FileInstance(file_path.c_str()));
 }
@@ -51,6 +52,10 @@ void LogFileSessionBox::StopCapture()
 void LogFileSessionBox::RemoveKeyword(KeywordItem* keyword_item)
 {
 	keyword_filter_list_.remove(keyword_item);
+	if (keyword_filter_list_.size() == 0)
+	{
+		global_message_->SetVisible(true);
+	}
 }
 
 bool LogFileSessionBox::OnClicked(EventArgs* msg)
@@ -164,6 +169,8 @@ bool LogFileSessionBox::AddKeyword()
 	item->InitControl(keyword, keyword_list_, this);
 	keyword_filter_list_.push_back(item);
 	keyword_input_->SetText(L"");
+
+	global_message_->SetVisible(false);
 
 	return true;
 }
