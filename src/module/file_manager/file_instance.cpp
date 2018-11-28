@@ -104,7 +104,7 @@ void FileInstance::CaptureFileThread()
 		// 这里直接 continue 等待下一次文件变更消息出现就有可能重新创建新的日志文件了
 		HANDLE file_handle = CreateFile(file_.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, 
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-		if (!file_handle)
+		if (INVALID_HANDLE_VALUE == file_handle)
 		{
 			continue;
 		}
@@ -165,11 +165,14 @@ DWORD FileInstance::GetFileSizeBytes()
 	HANDLE  file_handle = NULL;
 	DWORD   file_size = 0;
 
-	file_handle = CreateFile(file_.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, 
+	file_handle = CreateFile(file_.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, 
 		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	file_size = GetFileSize(file_handle, NULL);
-	CloseHandle(file_handle);
-	file_handle = NULL;
+	if (file_handle != INVALID_HANDLE_VALUE)
+	{
+		file_size = GetFileSize(file_handle, NULL);
+		CloseHandle(file_handle);
+		file_handle = NULL;
+	}
 
 	return file_size;
 }
